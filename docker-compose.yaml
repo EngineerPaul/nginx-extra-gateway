@@ -21,9 +21,9 @@ services:
       context: ./nginx
       dockerfile: dockerfile
     container_name: extra_nginx
-    ports:
-      # прямой доступ для отладки (основной вход — через diary nginx :80/:443)
-      # - "8088:80"
+    # ports:
+    #   # прямой доступ для отладки (основной вход — через diary nginx :80/:443)
+    #   - "8088:80"
     restart: unless-stopped
     networks:
       - diary_net
