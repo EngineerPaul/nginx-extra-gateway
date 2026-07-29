@@ -5,6 +5,8 @@ RUN rm /etc/nginx/conf.d/default.conf && \
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY conf.d/default.conf /etc/nginx/conf.d/default.conf
+COPY conf.d/analysis.conf /etc/nginx/conf.d/analysis.conf
+# Аналогично добавить другие конфигурационные файлы для других сервисов сюда...
 COPY html/blank.html /usr/share/nginx/html/extra/blank.html
 
 EXPOSE 80

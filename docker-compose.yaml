@@ -1,32 +1,14 @@
-# Отдельный nginx-шлюз для сервисов под префиксом /extra.
-# Не часть Diary — выносится в свой репозиторий; здесь для проверки инфраструктуры.
-#
-# Подключается к сети основного стека (внешняя сеть), чтобы diary nginx
-# мог проксировать: proxy_pass http://extra_nginx;
-#
-# Имя сети = {имя_проекта_compose}_default.
-# Узнать: docker network ls | grep default
-# Пример для каталога Diary2.0: diary20_default
-#
-# Запуск (из этой папки, при уже поднятом Diary):
-#   docker compose up -d
-#
-# Проверка:
-#   curl http://localhost/extra/blank
-#   (через основной nginx) или напрямую: curl http://localhost:8088/extra/blank
-
 services:
   extra_nginx:
     build:
       context: ./nginx
       dockerfile: dockerfile
     container_name: extra_nginx
-    # ports:
-    #   # прямой доступ для отладки (основной вход — через diary nginx :80/:443)
-    #   - "8088:80"
+    # ports: ["8088:80"]  # отладка без Diary
     restart: unless-stopped
     networks:
       - diary_net
+      - extra_net
     healthcheck:
       test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1/extra/blank || exit 1"]
       interval: 30s
@@ -37,5 +19,7 @@ services:
 networks:
   diary_net:
     external: true
-    # При другом имени проекта compose подставьте своё из `docker network ls`
     name: diary20_default
+  extra_net:
+    external: true
+    name: extra_services
