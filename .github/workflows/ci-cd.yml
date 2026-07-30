@@ -1,0 +1,63 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate compose
+        run: docker compose config
+
+      - name: Create external networks (for local smoke-test)
+        run: |
+          docker network create diary20_default 2>/dev/null || true
+          docker network create extra_services 2>/dev/null || true
+
+      - name: Build image
+        run: docker compose build
+
+      - name: Smoke-test /extra/blank
+        run: |
+          docker compose up -d
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            if docker compose exec -T extra_nginx wget -q -O /dev/null http://127.0.0.1/extra/blank; then
+              echo "OK: /extra/blank"
+              docker compose down
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "FAIL: /extra/blank not ready"
+          docker compose logs
+          docker compose down
+          exit 1
+
+  deploy:
+    needs: ci
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            set -euo pipefail
+            cd "${{ secrets.DEPLOY_PATH }}"
+            BRANCH="${{ secrets.DEPLOY_BRANCH }}"
+            if [ -z "$BRANCH" ]; then BRANCH=master; fi
+            git fetch origin
+            git reset --hard "origin/${BRANCH}"
+            bash .github/deploy_ssh.sh
