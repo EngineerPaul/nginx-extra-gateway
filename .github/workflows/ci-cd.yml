@@ -15,7 +15,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Validate compose
-        run: docker compose config
+        run: |
+          docker compose -f docker-compose.yaml config
+          docker compose -f docker-compose.yaml -f .github/docker-compose.ci.yaml config
 
       - name: Create external networks (for local smoke-test)
         run: |
@@ -27,18 +29,18 @@ jobs:
 
       - name: Smoke-test /extra/blank
         run: |
-          docker compose up -d
+          docker compose -f docker-compose.yaml -f .github/docker-compose.ci.yaml up -d
           for i in 1 2 3 4 5 6 7 8 9 10; do
-            if docker compose exec -T extra_nginx wget -q -O /dev/null http://127.0.0.1/extra/blank; then
+            if docker compose -f docker-compose.yaml -f .github/docker-compose.ci.yaml exec -T extra_nginx wget -q -O /dev/null http://127.0.0.1/extra/blank; then
               echo "OK: /extra/blank"
-              docker compose down
+              docker compose -f docker-compose.yaml -f .github/docker-compose.ci.yaml down
               exit 0
             fi
             sleep 1
           done
           echo "FAIL: /extra/blank not ready"
-          docker compose logs
-          docker compose down
+          docker compose -f docker-compose.yaml -f .github/docker-compose.ci.yaml logs
+          docker compose -f docker-compose.yaml -f .github/docker-compose.ci.yaml down
           exit 1
 
   deploy:

@@ -98,8 +98,10 @@ Settings → Secrets and variables → Actions.
 ## 3. Файлы в репозитории
 
 ```text
-.github/workflows/ci-cd.yml   # pipeline: CI + deploy
-.github/deploy_ssh.sh         # команды на сервере после git reset
+.github/workflows/ci-cd.yml        # pipeline: CI + deploy
+.github/deploy_ssh.sh              # команды на сервере после git reset
+.github/docker-compose.ci.yaml     # override для smoke-test (без analysis)
+.github/default.ci.conf            # nginx-конфиг для CI smoke-test
 ```
 
 ### Job `ci`
@@ -107,10 +109,11 @@ Settings → Secrets and variables → Actions.
 На `ubuntu-latest` при push/PR в `master`:
 
 1. Checkout
-2. `docker compose config`
+2. `docker compose config` (+ CI override)
 3. Создание внешних сетей (только для smoke-test в CI)
 4. `docker compose build`
-5. `docker compose up` + проверка `/extra/blank` внутри контейнера
+5. `docker compose -f … -f .github/docker-compose.ci.yaml up` + проверка `/extra/blank`
+   (в CI analysis отключён — подменяется `default.ci.conf`)
 
 Deploy **не** запускается на pull_request.
 

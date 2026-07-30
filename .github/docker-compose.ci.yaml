@@ -1,0 +1,9 @@
+# Только для CI smoke-test (не использовать на проде).
+# Отключает analysis: подменяет default.conf без include analysis.conf.
+#
+#   docker compose -f docker-compose.yaml -f .github/docker-compose.ci.yaml up -d
+
+services:
+  extra_nginx:
+    volumes:
+      - ./.github/default.ci.conf:/etc/nginx/conf.d/default.conf:ro
