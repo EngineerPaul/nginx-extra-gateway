@@ -16,8 +16,8 @@ diary nginx  (:80 / :443)
 extra_nginx  (этот проект)
    │
    ├─ /extra/blank      → статическая заглушка (проверка цепочки)
-   ├─ /extra/analysis/  → analysis_frontend:9001  (сеть extra_services)
-   └─ /extra/analysis/api/ → analysis_backend:9002
+   ├─ /extra/analyses/  → analyses_frontend:80  (сеть extra_services)
+   └─ /extra/analyses/api/ → analyses_backend:8000
 ```
 
 `extra_nginx` сидит в **двух** Docker-сетях:
@@ -25,9 +25,9 @@ extra_nginx  (этот проект)
 | Сеть | Зачем |
 |------|--------|
 | `diary20_default` | Diary видит контейнер по имени `extra_nginx` |
-| `extra_services` | Шлюз видит независимые сервисы (`analysis_*` и др.) по `container_name` |
+| `extra_services` | Шлюз видит независимые сервисы (`analyses_*` и др.) по `container_name` |
 
-Маршруты `/extra/<сервис>/...` задаются файлами в `nginx/conf.d/` (например `analysis.conf`), которые подключаются из одного `server` в `default.conf`.
+Маршруты `/extra/<сервис>/...` задаются файлами в `nginx/conf.d/` (например `analyses.conf`), которые подключаются из одного `server` в `default.conf`.
 
 ## Подготовка на сервере
 
@@ -66,20 +66,20 @@ curl http://localhost/extra/blank
 curl http://localhost:8088/extra/blank
 ```
 
-## Подключение сервиса (на примере analysis)
+## Подключение сервиса (на примере analyses)
 
 Сервис — отдельный compose-проект. Он поднимается в своей сети и **дополнительно** подключается к `extra_services`.
 
-1. Задать стабильные `container_name` (`analysis_frontend`, `analysis_backend`).
+1. Задать стабильные `container_name` (`analyses_frontend`, `analyses_backend`).
 2. Добавить сеть:
 
 ```yaml
 services:
   frontend:
-    container_name: analysis_frontend
+    container_name: analyses_frontend
     networks: [default, extra_net]
   backend:
-    container_name: analysis_backend
+    container_name: analyses_backend
     networks: [default, extra_net]
 
 networks:
@@ -88,10 +88,10 @@ networks:
     name: extra_services
 ```
 
-3. В шлюзе описать location в `nginx/conf.d/<сервис>.conf` и `include` в `default.conf` (для analysis уже сделано).
+3. В шлюзе описать location в `nginx/conf.d/<сервис>.conf` и `include` в `default.conf` (для analyses уже сделано).
 4. Порты наружу для работы через Diary не обязательны — трафик идёт по Docker DNS.
 
-Порядок: сначала сервис (analysis), потом `docker compose up -d --build` шлюза (или перезагрузка nginx после появления контейнеров).
+Порядок: сначала сервис (analyses), потом `docker compose up -d --build` шлюза (или перезагрузка nginx после появления контейнеров).
 
 ## Структура
 
@@ -102,7 +102,7 @@ nginx/
   nginx.conf
   conf.d/
     default.conf    # server + blank + include маршрутов
-    analysis.conf   # /extra/analysis → frontend/backend
+    analyses.conf   # /extra/analyses → frontend/backend
   html/
     blank.html
 ```

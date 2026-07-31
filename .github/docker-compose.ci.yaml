@@ -1,5 +1,5 @@
 # Только для CI smoke-test (не использовать на проде).
-# Отключает analysis: подменяет default.conf без include analysis.conf.
+# Отключает analyses: подменяет default.conf без include analyses.conf.
 #
 #   docker compose -f docker-compose.yaml -f .github/docker-compose.ci.yaml up -d
 

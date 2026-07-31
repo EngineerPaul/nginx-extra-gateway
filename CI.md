@@ -100,7 +100,7 @@ Settings → Secrets and variables → Actions.
 ```text
 .github/workflows/ci-cd.yml        # pipeline: CI + deploy
 .github/deploy_ssh.sh              # команды на сервере после git reset
-.github/docker-compose.ci.yaml     # override для smoke-test (без analysis)
+.github/docker-compose.ci.yaml     # override для smoke-test (без analyses)
 .github/default.ci.conf            # nginx-конфиг для CI smoke-test
 ```
 
@@ -113,7 +113,7 @@ Settings → Secrets and variables → Actions.
 3. Создание внешних сетей (только для smoke-test в CI)
 4. `docker compose build`
 5. `docker compose -f … -f .github/docker-compose.ci.yaml up` + проверка `/extra/blank`
-   (в CI analysis отключён — подменяется `default.ci.conf`)
+   (в CI analyses отключён — подменяется `default.ci.conf`)
 
 Deploy **не** запускается на pull_request.
 
