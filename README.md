@@ -17,7 +17,8 @@ extra_nginx  (этот проект)
    │
    ├─ /extra/blank      → статическая заглушка (проверка цепочки)
    ├─ /extra/analyses/  → analyses_frontend:80  (сеть extra_services)
-   └─ /extra/analyses/api/ → analyses_backend:8000
+   ├─ /extra/analyses/api/ → analyses_backend:8000
+   └─ /extra/summary/   → summary:8000
 ```
 
 `extra_nginx` сидит в **двух** Docker-сетях:
@@ -103,6 +104,7 @@ nginx/
   conf.d/
     default.conf    # server + blank + include маршрутов
     analyses.conf   # /extra/analyses → frontend/backend
+    summary.conf    # /extra/summary → frontend/backend
   html/
     blank.html
 ```
