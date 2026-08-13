@@ -15,6 +15,7 @@ diary nginx  (:80 / :443)
    ▼
 extra_nginx  (этот проект)
    │
+   ├─ /extra/           → extra.html (каталог сервисов)
    ├─ /extra/blank      → статическая заглушка (проверка цепочки)
    ├─ /extra/analyses/  → analyses_frontend:80  (сеть extra_services)
    ├─ /extra/analyses/api/ → analyses_backend:8000
@@ -105,10 +106,12 @@ nginx/
   nginx.conf
   conf.d/
     default.conf    # server + blank + include маршрутов
+    extra.conf      # /extra/ → extra.html
     analyses.conf   # /extra/analyses → frontend/backend
     summary.conf    # /extra/summary → summary
     marketing.conf  # /extra/marketing → marketing (sda-marketing)
     calendar.conf   # /extra/calendar → calendar
   html/
     blank.html
+    extra.html
 ```
