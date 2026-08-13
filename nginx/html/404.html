@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>404 — не найдено</title>
+  <style>
+    :root {
+      --ink: #1c1917;
+      --muted: #78716c;
+      --accent: #0f766e;
+      --bg: #fafaf9;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: 1.5rem;
+      padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+      font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+      color: var(--ink);
+      text-align: center;
+      background:
+        radial-gradient(ellipse 80% 50% at 10% -10%, #ccfbf1 0%, transparent 55%),
+        radial-gradient(ellipse 60% 40% at 100% 0%, #fef3c7 0%, transparent 45%),
+        var(--bg);
+    }
+    .code {
+      margin: 0;
+      font-size: clamp(5.5rem, 22vw, 9rem);
+      font-weight: 750;
+      line-height: 0.9;
+      letter-spacing: -0.06em;
+      color: var(--ink);
+    }
+    h1 {
+      margin: 1rem 0 0.5rem;
+      font-size: clamp(1.15rem, 3vw + 0.8rem, 1.5rem);
+      font-weight: 650;
+    }
+    p {
+      margin: 0 0 1.5rem;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.45;
+      max-width: 22rem;
+    }
+    a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div>
+    <p class="code" aria-hidden="true">404</p>
+    <h1>Страница не найдена</h1>
+    <p>Такого пути в extra-gateway нет.</p>
+    <p><a id="catalog" href="https://daystream.ru/extra/">К каталогу /extra</a></p>
+  </div>
+  <script>
+    const DOMAIN = "daystream.ru";
+    document.getElementById("catalog").href = `https://${DOMAIN}/extra/`;
+  </script>
+</body>
+</html>
