@@ -1,12 +1,11 @@
 FROM nginx:1.27-alpine
 
 RUN rm /etc/nginx/conf.d/default.conf && \
-    mkdir -p /usr/share/nginx/html/extra
+    mkdir -p /usr/share/nginx/html/extra /usr/share/nginx/apks
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY conf.d/ /etc/nginx/conf.d/
 COPY html/ /usr/share/nginx/html/extra/
-COPY apks/ /usr/share/nginx/apks/
 
 EXPOSE 80
 

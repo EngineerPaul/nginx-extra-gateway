@@ -5,6 +5,8 @@ services:
       dockerfile: dockerfile
     container_name: extra_nginx
     # ports: ["8088:80"]  # отладка без Diary
+    volumes:
+      - ./nginx/apks:/usr/share/nginx/apks:ro
     restart: unless-stopped
     networks:
       - diary_net

@@ -2,6 +2,6 @@ github_actions_ed25519
 github_actions_ed25519.pub
 *_deploy_key
 *_deploy_key.pub
-# Сами apk не коммитим, но папка должна быть в репозитории: иначе COPY apks/ в CI не находит контекст.
+# Сами apk не коммитим. Папка nginx/apks монтируется в контейнер, .gitkeep держит её в репозитории.
 nginx/apks/*
 !nginx/apks/.gitkeep
