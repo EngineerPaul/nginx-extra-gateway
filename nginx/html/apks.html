@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Приложения</title>
+  <title>Android приложения</title>
   <style>
     :root {
       --ink: #1c1917;
@@ -120,41 +120,6 @@
       padding: 1.25rem 1rem;
       color: var(--muted);
     }
-    .howto {
-      margin-top: 1.25rem;
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 0.85rem 1rem 1rem;
-    }
-    .howto summary {
-      cursor: pointer;
-      font-weight: 600;
-    }
-    .howto ol {
-      margin: 0.75rem 0 0;
-      padding-left: 1.2rem;
-      color: var(--ink);
-      line-height: 1.5;
-    }
-    .howto li + li { margin-top: 0.45rem; }
-    code, pre {
-      font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
-      font-size: 0.86em;
-    }
-    code {
-      background: #f5f5f4;
-      padding: 0.1em 0.35em;
-      border-radius: 4px;
-    }
-    pre {
-      margin: 0.55rem 0 0;
-      padding: 0.75rem 0.9rem;
-      overflow-x: auto;
-      background: #f5f5f4;
-      border-radius: 8px;
-      line-height: 1.45;
-    }
 
     @media (max-width: 640px) {
       main {
@@ -192,7 +157,7 @@
 <body>
   <main>
     <p class="back"><a href="/extra/">К каталогу</a></p>
-    <h1>Приложения</h1>
+    <h1>Android приложения</h1>
     <p class="lead">APK для установки на телефон. Номер в таблице — порядок строк в списке ниже.</p>
     <div class="panel">
       <table>
@@ -206,33 +171,17 @@
         </thead>
         <tbody id="rows"></tbody>
       </table>
-      <p class="empty" id="empty" hidden>Пока нет файлов. Добавьте строку по инструкции ниже.</p>
+      <p class="empty" id="empty" hidden>Пока нет файлов.</p>
     </div>
-    <details class="howto">
-      <summary>Как добавить файл</summary>
-      <ol>
-        <li>Положите файл в папку <code>nginx/apk/</code>. Имя латиницей, например <code>notes.apk</code>. Сейчас там картинка <code>sample.png</code> — шаблон, её можно заменить или удалить.</li>
-        <li>В <code>nginx/html/apks.html</code> добавьте объект в массив <code>apps</code>:</li>
-      </ol>
-      <pre>{ name: "Заметки", description: "Коротко, что установится на телефон.", file: "notes.apk" },</pre>
-      <ol start="3">
-        <li>Пересоберите шлюз: <code>docker compose up -d --build</code>. Строка появится в таблице, кнопка отдаст файл из папки.</li>
-      </ol>
-    </details>
   </main>
   <script>
-    // file — имя файла в nginx/apk/, без пути.
+    // file — имя файла в nginx/apks/, без пути.
     const apps = [
       {
-        name: "Шаблон",
-        description: "Картинка вместо apk, чтобы проверить кнопку. Замените sample.png своим файлом и поправьте эту строку.",
-        file: "sample.png",
+        name: "Tasks",
+        description: "Приложение для управления заметками и напоминаниями.",
+        file: "tasks.apk",
       },
-      // {
-      //   name: "Заметки",
-      //   description: "Коротко, что установится на телефон.",
-      //   file: "notes.apk",
-      // },
     ];
 
     const tbody = document.getElementById("rows");
