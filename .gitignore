@@ -2,4 +2,7 @@ github_actions_ed25519
 github_actions_ed25519.pub
 *_deploy_key
 *_deploy_key.pub
+# Сами apk не коммитим, но папка должна быть в репозитории: иначе COPY apk/ в CI не находит контекст.
 nginx/apk/*
+!nginx/apk/.gitkeep
+!nginx/apk/sample.png
